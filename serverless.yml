@@ -1,0 +1,111 @@
+service: mahavirsports
+custom:
+  BUILD_STAGE: ${opt:stage, self:provider.stage}
+  deploymentBucket:
+    enabled: true
+  DB_HOST_WRITER:
+    testv1: '172.30.1.207'
+    betav1: '172.30.1.207'
+    prodv3: 'vlivedbmt.cluster-c8gjcftzwz2s.us-east-1.rds.amazonaws.com'
+  DB_HOST_READER:
+    testv1: '172.30.1.207'
+    betav1: '172.30.1.207'
+    prodv3: 'vlivedbmt.cluster-ro-c8gjcftzwz2s.us-east-1.rds.amazonaws.com'
+  DB_USER:
+    testv1: 'vlive'
+    betav1: 'vlive'
+    prodv3: 'vboxlite'
+  DB_PASSWORD:
+    testv1: 'Vlive@123.'
+    betav1: 'Vlive@123.'
+    prodv3: 'vLive4321'
+  REDIS_HOST:
+    testv1: '172.30.1.207'
+    betav1: '172.30.1.207'
+    prodv3: '172.30.4.17'
+  REDIS_PASSWORD:
+    testv1: ''
+    betav1: ''
+    prodv3: 'vlive@321'
+  RAZORPAY_PLAN_LIST:
+    testv1: '{"FKWGGMDU" : "plan_FShUsAZ9DNLNyr", "FKWHHMDU" : "plan_FShVoGi9dNtkx7", "FKWKKMDU" : "plan_FRKZIJch42hxNe"}'
+    betav1: '{"FKWGGMDU" : "plan_FShUsAZ9DNLNyr", "FKWHHMDU" : "plan_FShVoGi9dNtkx7", "FKWKKMDU" : "plan_FRKZIJch42hxNe"}'
+    prodv3: '{"FKWGGMDU":"plan_FUHyv6gaU3spge","FKWHHMDU":"plan_FUHzdTcdNZcTGx","FKWLLMDU":"plan_FvRApY16UxjNau","MPFBFKCG":"plan_G86Lc7q1SJcvLR","UITJSXUA":"plan_G8p2YZQ15BRXKU","NC35VNOA":"plan_G8p1oSwSBcYPAv","ILHUXZCV":"plan_G8p17g4xizGgkI","7DRJE0SU":"plan_G8ozbTAewUN54z"}'
+provider:
+  name: aws
+  region: ap-south-1
+  profile: mahavirsports
+  runtime: nodejs12.x
+  stage: testv1
+  lambdaHashingVersion: '20201221'
+  apiGateway:
+    shouldStartNameWithService: true
+  # deploymentPrefix: lambdadeploy
+  # deploymentBucket:
+  #   name: data.vcharge.mobiotics.com
+  endpointType: Edge
+  # vpc:
+  #   VpcId: vpc-6248fd07
+  #   securityGroupIds:
+  #     - sg-2410ff40
+  #     - sg-0a5cc27816a6ed803
+  #   subnetIds:
+  #     - subnet-007a94d2f31d08fe7
+  #     - subnet-0d2853f342d649f1d  
+  environment:
+    NODE_PATH: './:/opt/node_modules'
+    AUTH_ENABLED: true
+    DEBUG_LOG_ENABLED: false
+    VLIVE_DB_HOST: ${self:custom.DB_HOST_WRITER.${self:custom.BUILD_STAGE}}
+    VLIVE_DB_HOST_READER: ${self:custom.DB_HOST_READER.${self:custom.BUILD_STAGE}}
+    VLIVE_DB_USERNMAE: ${self:custom.DB_USER.${self:custom.BUILD_STAGE}}
+    VLIVE_DB_PASSWD: ${self:custom.DB_PASSWORD.${self:custom.BUILD_STAGE}}
+    BUILD_STAGE: ${self:custom.BUILD_STAGE}
+    ENV: 'STAGING'
+    REDIS_HOST: ${self:custom.REDIS_HOST.${self:custom.BUILD_STAGE}}
+    REDIS_PORT: 6379
+    REDIS_PASSWORD: ${self:custom.REDIS_PASSWORD.${self:custom.BUILD_STAGE}}
+    RAZORPAY_PLAN_LIST: ${self:custom.RAZORPAY_PLAN_LIST.${self:custom.BUILD_STAGE}}
+
+functions:
+  mahavirsports:
+    name: ${self:service}-${opt:stage, self:provider.stage}
+    description: mahavirsports Service
+    handler: handler.handler
+    layers:
+      - arn:aws:lambda:ap-south-1:199131503332:layer:nodebasiclayer:1
+    timeout: 30
+    events:
+      - http:
+          path: '{proxy+}'
+          method: any
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - X-Requested-With
+              - Origin
+              - Accept
+              - Accept-Encoding
+              - X-SESSION
+
+plugins:
+  - serverless-offline
+
+package:
+  exclude:
+    - Test*
+    - composer*
+    - vendor/**
+    - vendorlocal/**
+    # - node_modules/**
+    - layers/**
+    - Gruntfile.js
+    - sls*
+    - package*
+    - README.md

@@ -1,0 +1,672 @@
+{
+  "service": {
+    "service": "mahavirsports",
+    "serviceObject": {
+      "name": "mahavirsports"
+    },
+    "provider": {
+      "name": "aws",
+      "region": "ap-south-1",
+      "profile": "mahavirsports",
+      "runtime": "nodejs12.x",
+      "stage": "testv1",
+      "lambdaHashingVersion": "20201221",
+      "apiGateway": {
+        "shouldStartNameWithService": true
+      },
+      "endpointType": "Edge",
+      "environment": {
+        "NODE_PATH": "./:/opt/node_modules",
+        "AUTH_ENABLED": "true",
+        "DEBUG_LOG_ENABLED": "false",
+        "VLIVE_DB_HOST": "172.30.1.207",
+        "VLIVE_DB_HOST_READER": "172.30.1.207",
+        "VLIVE_DB_USERNMAE": "vlive",
+        "VLIVE_DB_PASSWD": "Vlive@123.",
+        "BUILD_STAGE": "testv1",
+        "ENV": "STAGING",
+        "REDIS_HOST": "172.30.1.207",
+        "REDIS_PORT": "6379",
+        "REDIS_PASSWORD": "",
+        "RAZORPAY_PLAN_LIST": "{\"FKWGGMDU\" : \"plan_FShUsAZ9DNLNyr\", \"FKWHHMDU\" : \"plan_FShVoGi9dNtkx7\", \"FKWKKMDU\" : \"plan_FRKZIJch42hxNe\"}"
+      },
+      "versionFunctions": true,
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "ServerlessDeploymentBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+              "BucketEncryption": {
+                "ServerSideEncryptionConfiguration": [
+                  {
+                    "ServerSideEncryptionByDefault": {
+                      "SSEAlgorithm": "AES256"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "ServerlessDeploymentBucketPolicy": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+              "Bucket": {
+                "Ref": "ServerlessDeploymentBucket"
+              },
+              "PolicyDocument": {
+                "Statement": [
+                  {
+                    "Action": "s3:*",
+                    "Effect": "Deny",
+                    "Principal": "*",
+                    "Resource": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":s3:::",
+                            {
+                              "Ref": "ServerlessDeploymentBucket"
+                            },
+                            "/*"
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":s3:::",
+                            {
+                              "Ref": "ServerlessDeploymentBucket"
+                            }
+                          ]
+                        ]
+                      }
+                    ],
+                    "Condition": {
+                      "Bool": {
+                        "aws:SecureTransport": false
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "MahavirsportsLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/mahavirsports-testv1"
+            }
+          },
+          "IamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "mahavirsports",
+                        "testv1",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:CreateLogGroup"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/mahavirsports-testv1*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/mahavirsports-testv1*:*:*"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "mahavirsports",
+                    "testv1",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "lambdaRole"
+                  ]
+                ]
+              }
+            }
+          },
+          "MahavirsportsLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/mahavirsports/testv1/1659213035402-2022-07-30T20:30:35.402Z/mahavirsports.zip"
+              },
+              "Handler": "handler.handler",
+              "Runtime": "nodejs12.x",
+              "FunctionName": "mahavirsports-testv1",
+              "MemorySize": 1024,
+              "Timeout": 30,
+              "Description": "mahavirsports Service",
+              "Environment": {
+                "Variables": {
+                  "NODE_PATH": "./:/opt/node_modules",
+                  "AUTH_ENABLED": "true",
+                  "DEBUG_LOG_ENABLED": "false",
+                  "VLIVE_DB_HOST": "172.30.1.207",
+                  "VLIVE_DB_HOST_READER": "172.30.1.207",
+                  "VLIVE_DB_USERNMAE": "vlive",
+                  "VLIVE_DB_PASSWD": "Vlive@123.",
+                  "BUILD_STAGE": "testv1",
+                  "ENV": "STAGING",
+                  "REDIS_HOST": "172.30.1.207",
+                  "REDIS_PORT": "6379",
+                  "REDIS_PASSWORD": "",
+                  "RAZORPAY_PLAN_LIST": "{\"FKWGGMDU\" : \"plan_FShUsAZ9DNLNyr\", \"FKWHHMDU\" : \"plan_FShVoGi9dNtkx7\", \"FKWKKMDU\" : \"plan_FRKZIJch42hxNe\"}"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Layers": [
+                "arn:aws:lambda:ap-south-1:199131503332:layer:nodebasiclayer:1"
+              ]
+            },
+            "DependsOn": [
+              "MahavirsportsLogGroup"
+            ]
+          },
+          "MahavirsportsLambdaVersion0cgFO2nMgyrIwpubkgIGSQjGOgNX2o54uYsNtgqQP0": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "MahavirsportsLambdaFunction"
+              },
+              "CodeSha256": "FbH/FVUXx+mIq54oppk78XO68UDOCDMa9XPmKN6rKtQ=",
+              "Description": "mahavirsports Service"
+            }
+          },
+          "ApiGatewayRestApi": {
+            "Type": "AWS::ApiGateway::RestApi",
+            "Properties": {
+              "Name": "mahavirsports-testv1",
+              "EndpointConfiguration": {
+                "Types": [
+                  "EDGE"
+                ]
+              },
+              "Policy": ""
+            }
+          },
+          "ApiGatewayResourceProxyVar": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "{proxy+}",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodProxyVarOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Requested-With,Origin,Accept,Accept-Encoding,X-SESSION'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,GET,HEAD,PATCH,POST,PUT'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceProxyVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodProxyVarAny": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "ANY",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceProxyVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "MahavirsportsLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "MahavirsportsLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayDeployment1659213033370": {
+            "Type": "AWS::ApiGateway::Deployment",
+            "Properties": {
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "StageName": "testv1"
+            },
+            "DependsOn": [
+              "ApiGatewayMethodProxyVarOptions",
+              "ApiGatewayMethodProxyVarAny"
+            ]
+          },
+          "MahavirsportsLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "MahavirsportsLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": {
+              "Ref": "ServerlessDeploymentBucket"
+            },
+            "Export": {
+              "Name": "sls-mahavirsports-testv1-ServerlessDeploymentBucketName"
+            }
+          },
+          "MahavirsportsLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "MahavirsportsLambdaVersion0cgFO2nMgyrIwpubkgIGSQjGOgNX2o54uYsNtgqQP0"
+            },
+            "Export": {
+              "Name": "sls-mahavirsports-testv1-MahavirsportsLambdaFunctionQualifiedArn"
+            }
+          },
+          "ServiceEndpoint": {
+            "Description": "URL of the service endpoint",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "https://",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  ".execute-api.",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  },
+                  "/testv1"
+                ]
+              ]
+            },
+            "Export": {
+              "Name": "sls-mahavirsports-testv1-ServiceEndpoint"
+            }
+          }
+        }
+      },
+      "coreCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "ServerlessDeploymentBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+              "BucketEncryption": {
+                "ServerSideEncryptionConfiguration": [
+                  {
+                    "ServerSideEncryptionByDefault": {
+                      "SSEAlgorithm": "AES256"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "ServerlessDeploymentBucketPolicy": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+              "Bucket": {
+                "Ref": "ServerlessDeploymentBucket"
+              },
+              "PolicyDocument": {
+                "Statement": [
+                  {
+                    "Action": "s3:*",
+                    "Effect": "Deny",
+                    "Principal": "*",
+                    "Resource": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":s3:::",
+                            {
+                              "Ref": "ServerlessDeploymentBucket"
+                            },
+                            "/*"
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":s3:::",
+                            {
+                              "Ref": "ServerlessDeploymentBucket"
+                            }
+                          ]
+                        ]
+                      }
+                    ],
+                    "Condition": {
+                      "Bool": {
+                        "aws:SecureTransport": false
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": {
+              "Ref": "ServerlessDeploymentBucket"
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "custom": {
+      "BUILD_STAGE": "testv1",
+      "deploymentBucket": {
+        "enabled": true
+      },
+      "DB_HOST_WRITER": {
+        "testv1": "172.30.1.207",
+        "betav1": "172.30.1.207",
+        "prodv3": "vlivedbmt.cluster-c8gjcftzwz2s.us-east-1.rds.amazonaws.com"
+      },
+      "DB_HOST_READER": {
+        "testv1": "172.30.1.207",
+        "betav1": "172.30.1.207",
+        "prodv3": "vlivedbmt.cluster-ro-c8gjcftzwz2s.us-east-1.rds.amazonaws.com"
+      },
+      "DB_USER": {
+        "testv1": "vlive",
+        "betav1": "vlive",
+        "prodv3": "vboxlite"
+      },
+      "DB_PASSWORD": {
+        "testv1": "Vlive@123.",
+        "betav1": "Vlive@123.",
+        "prodv3": "vLive4321"
+      },
+      "REDIS_HOST": {
+        "testv1": "172.30.1.207",
+        "betav1": "172.30.1.207",
+        "prodv3": "172.30.4.17"
+      },
+      "REDIS_PASSWORD": {
+        "testv1": "",
+        "betav1": "",
+        "prodv3": "vlive@321"
+      },
+      "RAZORPAY_PLAN_LIST": {
+        "testv1": "{\"FKWGGMDU\" : \"plan_FShUsAZ9DNLNyr\", \"FKWHHMDU\" : \"plan_FShVoGi9dNtkx7\", \"FKWKKMDU\" : \"plan_FRKZIJch42hxNe\"}",
+        "betav1": "{\"FKWGGMDU\" : \"plan_FShUsAZ9DNLNyr\", \"FKWHHMDU\" : \"plan_FShVoGi9dNtkx7\", \"FKWKKMDU\" : \"plan_FRKZIJch42hxNe\"}",
+        "prodv3": "{\"FKWGGMDU\":\"plan_FUHyv6gaU3spge\",\"FKWHHMDU\":\"plan_FUHzdTcdNZcTGx\",\"FKWLLMDU\":\"plan_FvRApY16UxjNau\",\"MPFBFKCG\":\"plan_G86Lc7q1SJcvLR\",\"UITJSXUA\":\"plan_G8p2YZQ15BRXKU\",\"NC35VNOA\":\"plan_G8p1oSwSBcYPAv\",\"ILHUXZCV\":\"plan_G8p17g4xizGgkI\",\"7DRJE0SU\":\"plan_G8ozbTAewUN54z\"}"
+      }
+    },
+    "pluginsData": {},
+    "functions": {
+      "mahavirsports": {
+        "name": "mahavirsports-testv1",
+        "description": "mahavirsports Service",
+        "handler": "handler.handler",
+        "layers": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"MahavirsportsLambdaFunction\"][\"Properties\"][\"Layers\"]"
+        },
+        "timeout": 30,
+        "events": [
+          {
+            "http": {
+              "path": "{proxy+}",
+              "method": "any",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "ANY"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent",
+                  "X-Requested-With",
+                  "Origin",
+                  "Accept",
+                  "Accept-Encoding",
+                  "X-SESSION"
+                ],
+                "allowCredentials": false
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "package": {},
+        "memory": 1024,
+        "runtime": "nodejs12.x",
+        "vpc": {},
+        "versionLogicalId": "MahavirsportsLambdaVersion0cgFO2nMgyrIwpubkgIGSQjGOgNX2o54uYsNtgqQP0"
+      }
+    },
+    "configValidationMode": "warn",
+    "serviceFilename": "serverless.yml",
+    "initialServerlessConfig": {
+      "service": "mahavirsports",
+      "custom": {
+        "$ref": "$[\"service\"][\"custom\"]"
+      },
+      "provider": {
+        "$ref": "$[\"service\"][\"provider\"]"
+      },
+      "functions": {
+        "$ref": "$[\"service\"][\"functions\"]"
+      },
+      "package": {
+        "exclude": [
+          "Test*",
+          "composer*",
+          "vendor/**",
+          "vendorlocal/**",
+          "layers/**",
+          "Gruntfile.js",
+          "sls*",
+          "package*",
+          "README.md"
+        ],
+        "artifactsS3KeyDirname": "serverless/mahavirsports/testv1/code-artifacts",
+        "artifact": "C:\\projects\\mahavirsports\\backend\\mahavirsports\\.serverless\\mahavirsports.zip",
+        "artifactDirectoryName": "serverless/mahavirsports/testv1/1659213035402-2022-07-30T20:30:35.402Z"
+      }
+    },
+    "layers": {},
+    "isDashboardMonitoringPreconfigured": false,
+    "artifact": "C:\\projects\\mahavirsports\\backend\\mahavirsports\\.serverless\\mahavirsports.zip"
+  },
+  "package": {
+    "artifactDirectoryName": "serverless/mahavirsports/testv1/1659213035402-2022-07-30T20:30:35.402Z",
+    "artifact": "mahavirsports.zip"
+  }
+}

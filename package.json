@@ -1,0 +1,59 @@
+{
+  "name": "vcharge",
+  "version": "1.0.0",
+  "description": "vcharge",
+  "main": "handler.js",
+  "scripts": {
+    "test": "sls offline -c slslocal.yml"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://manishgiri@bitbucket.org/mobiotics/vlivemultitenantplatformimpl.git"
+  },
+  "keywords": [
+    "vcharge"
+  ],
+  "author": "Manish Giri",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/mobiotics/vlivemultitenantplatformimpl#readme",
+  "dependencies": {
+    "@maxmind/geoip2-node": "^2.1.1",
+    "aes-ecb": "^1.3.10",
+    "assert": "^2.0.0",
+    "aws-sdk": "^2.714.1",
+    "axios": "^0.27.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "braintree": "^2.22.0",
+    "constants": "0.0.2",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "csv-express": "^1.2.2",
+    "ec-key": "0.0.2",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "ip-cidr": "^3.0.4",
+    "jsonwebtoken": "^8.5.1",
+    "key-encoder": "^1.1.7",
+    "mongodb": "^3.5.9",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "node-input-validator": "^4.5.0",
+    "randomstring": "^1.1.5",
+    "razorpay": "^2.0.6",
+    "redis": "^3.0.2",
+    "secp256k1": "3.5.2",
+    "serverless-http": "^2.5.0",
+    "serverless-mysql": "^1.5.4",
+    "uuid": "8.3.2"
+  },
+  "devDependencies": {
+    "grunt": "^1.1.0",
+    "grunt-contrib-jshint": "^3.2.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "jshint-stylish": "^2.2.1",
+    "offline": "0.0.1",
+    "serverless": "^3.18.2",
+    "serverless-offline": "^8.8.0"
+  }
+}
