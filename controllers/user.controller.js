@@ -19,12 +19,61 @@ userController.login= async (body)=>{
             "userid": user.userid,
             "name": user.name,
             "mobileno": user.mobileno,
-            "role": "ADMIN",
+            "role": user.role,
         };
+        if( user.status!= "ACTIVE")
+        throw {"errorCode":400,"reason":"Please verify your account first"};
         var token = jwt.sign( result, CONSTANTS.SECRET_KEY);
         result.token = token;
         console.log("userController.login:token ",token);
         return result;
+        }catch(ex){
+        throw ex;
+        }
+}
+
+userController.signup= async (body)=>{
+    try {
+        console.log("userController.login:body ",body);
+        let user = await userModel.signup(body);
+        console.log("userController.signup:user ",user);
+        // We need to send OTP to Mobile number
+
+        return {"message":`We have send an OTP to ${body.mobileno}. Please verify`};
+        }catch(ex){
+        throw ex;
+        }
+}
+
+userController.verify= async (body)=>{
+    try {
+        console.log("userController.login:body ",body);
+        let user = await userModel.verify(body);
+        console.log("userController.signup:user ",user);
+        // We need to send OTP to Mobile number
+
+        return {"message":`Verification done! Please login`};
+        }catch(ex){
+        throw ex;
+        }
+}
+
+
+userController.getPurchases= async (body)=>{
+    try {
+        console.log("userController.getPurchases:body ",body);
+        let purchases = await userModel.getPurchases(body);
+        return purchases;
+        }catch(ex){
+        throw ex;
+        }
+}
+
+userController.createTicket= async (body)=>{
+    try {
+        console.log("userController.getPurchases:body ",body);
+        let purchases = await userModel.createTicket(body);
+        return purchases;
         }catch(ex){
         throw ex;
         }

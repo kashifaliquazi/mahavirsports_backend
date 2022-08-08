@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var  {verifyToken} = require("../config/validation")
 var userController = require('../controllers/user.controller');
 
 router.post('/login',async (req, res, next)=> {
@@ -21,6 +22,43 @@ router.post('/login',async (req, res, next)=> {
     console.log("login:body ",body)
     let user = await userController.signup(body)
     res.send({ "success": user });
+    }catch(ex){
+    res.send(ex);
+    }
+  });
+
+  router.post('/verify',async (req, res, next)=> {
+
+    try {
+    let body = req.body;
+    console.log("verify:body ",body)
+    let user = await userController.verify(body)
+    res.send({ "success": user });
+    }catch(ex){
+    res.send(ex);
+    }
+  });
+
+  router.get('/getpurchases',verifyToken,async (req, res, next)=> {
+
+    try {
+    let body = req.body;
+    body.userData = req.userData;
+    console.log("getpurchases:body ",body)
+    let purchases = await userController.getPurchases(body)
+    res.send({ "success": purchases });
+    }catch(ex){
+    res.send(ex);
+    }
+  });
+  router.post('/createticket',verifyToken,async (req, res, next)=> {
+
+    try {
+    let body = req.body;
+    body.userData = req.userData;
+    console.log("getpurchases:body ",body)
+    let purchases = await userController.createTicket(body)
+    res.send({ "success": purchases });
     }catch(ex){
     res.send(ex);
     }

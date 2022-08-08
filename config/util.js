@@ -2,6 +2,10 @@ var request = require('request');
 // var PubNub = require('pubnub');
 var CONSTANTS = require('./constants').CONSTANTS;
 
+module.exports.getMysqlQueryPhrase = function (query){
+  return query.search('WHERE') >= 0 ? ' AND ' : ' WHERE ';
+};
+
 console.log("CONSTANTS >>>>>>>>>>>>>>>>>",CONSTANTS);
 module.exports.categories = {
   132:"DayByDay",
