@@ -69,11 +69,22 @@ userController.getPurchases= async (body)=>{
         }
 }
 
+
+userController.getTickets= async (body)=>{
+    try {
+        console.log("userController.getTickets:body ",body);
+        let tickets = await userModel.getTickets(body);
+        return tickets;
+        }catch(ex){
+        throw ex;
+        }
+}
+
 userController.createTicket= async (body)=>{
     try {
         console.log("userController.getPurchases:body ",body);
         let purchases = await userModel.createTicket(body);
-        return purchases;
+        return {"message":`Ticket has been created`};;
         }catch(ex){
         throw ex;
         }

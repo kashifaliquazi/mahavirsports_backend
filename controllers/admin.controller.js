@@ -28,7 +28,7 @@ adminController.addServiceBoy= async (body)=>{
         console.log("addServiceBoy.signup:user ",user);
         // We need to send OTP to Mobile number
 
-        return {"message":`We have send an OTP to ${body.mobileno}. Please verify`};
+        return {"message":`We have send an OTP to ${body.mobileno}. Please verify`,userid:user.insertId};
         }catch(ex){
         throw ex;
         }
@@ -45,6 +45,26 @@ adminController.getPurchases= async (body)=>{
 }
 
 
+adminController.getTickets= async (body)=>{
+    try {
+        console.log("adminController.getPurchases:body ",body);
+        let purchases = await adminModel.getTickets(body);
+        return purchases;
+        }catch(ex){
+        throw ex;
+        }
+}
+
+
+adminController.assignTicket= async (body)=>{
+    try {
+        console.log("adminController.assignTicket:body ",body);
+        let purchases = await adminModel.assignTicket(body);
+        return purchases;
+        }catch(ex){
+        throw ex;
+        }
+}
 // function createDisappearanceNotification(event_detail){
 //   let body ={"event_detail":event_detail}
 

@@ -20,6 +20,31 @@ var serviceController = require('../controllers/service.controller');
   });
 
 
+  router.get('/getassignedtickets',verifyToken,async (req, res, next)=> {
+
+    try {
+    let body = req.query;
+    body.userData = req.userData;
+    console.log("getassignedtickets:body ",body)
+    let tickets = await serviceController.getAssignedTickets(body);
+    res.send({ "success": tickets });
+    }catch(ex){
+    res.send(ex);
+    }
+  });
+
+  router.get('/getpurchases',verifyToken,async (req, res, next)=> {
+
+    try {
+    let body = req.query;
+    body.userData = req.userData;
+    console.log("getPurchases:body ",body)
+    let tickets = await serviceController.getPurchases(body);
+    res.send({ "success": tickets });
+    }catch(ex){
+    res.send(ex);
+    }
+  });
 
 
   

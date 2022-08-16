@@ -25,6 +25,36 @@ serviceController.addpurchase= async (body)=>{
         throw ex;
         }
 }
+
+
+serviceController.getAssignedTickets= async (body)=>{
+    try {
+        console.log("serviceController.getAssignedTickets:body ",body);
+        let tickets = await serviceModel.getAssignedTickets(body);
+        console.log("serviceController.getAssignedTickets:tickets ",tickets);
+
+        return tickets;
+        }catch(ex){
+            console.log("serviceController.getAssignedTickets:ex ",ex);
+        throw ex;
+        }
+}
+
+
+
+
+serviceController.getPurchases= async (body)=>{
+    try {
+        console.log("serviceController.getPurchases:body ",body);
+        let purchases = await serviceModel.getPurchases(body);
+        console.log("serviceController.getPurchases:purchases ",purchases);
+
+        return purchases;
+        }catch(ex){
+            console.log("serviceController.getPurchases:ex ",ex);
+        throw ex;
+        }
+}
 // function createDisappearanceNotification(event_detail){
 //   let body ={"event_detail":event_detail}
 

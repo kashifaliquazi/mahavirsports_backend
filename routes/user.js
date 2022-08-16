@@ -51,6 +51,20 @@ router.post('/login',async (req, res, next)=> {
     res.send(ex);
     }
   });
+
+  router.get('/getticekts',verifyToken,async (req, res, next)=> {
+
+    try {
+    let body = req.body;
+    body.userData = req.userData;
+    console.log("getpurchases:body ",body)
+    let tickets = await userController.getTickets(body);
+    res.send({ "success": tickets });
+    }catch(ex){
+    res.send(ex);
+    }
+  });
+
   router.post('/createticket',verifyToken,async (req, res, next)=> {
 
     try {

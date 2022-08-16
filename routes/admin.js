@@ -39,6 +39,29 @@ router.get('/getusers',verifyToken,async (req, res, next)=> {
     }
   });
 
+  router.get('/gettickets',verifyToken,async (req, res, next)=> {
+
+    try {
+    let body = req.query;
+    console.log("body>",body)
+    let purchases = await adminController.getTickets(body);
+    res.send({ "success": purchases});
+    }catch(ex){
+    res.send(ex);
+    }
+  });
+
+  router.post('/assignticket',verifyToken,async (req, res, next)=> {
+
+    try {
+    let body = req.body;
+    console.log("assignticket:body ",body)
+    let user = await adminController.assignTicket(body);
+    res.send({ "success": user });
+    }catch(ex){
+    res.send(ex);
+    }
+  });
 
 // var multer = require('multer');
 // var storage = multer.memoryStorage()

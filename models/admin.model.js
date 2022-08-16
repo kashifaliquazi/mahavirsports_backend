@@ -71,7 +71,7 @@ adminModel.getPurchases = async (body) =>{
     try {
         let mysql = await getConnection();
         let query =`select * from mahavirsports.purchases p inner join mahavirsports.users u on u.userid = p.userid `;
-        if(body.userid || body.purchaseid || body.purchaseid){
+        if(body.userid || body.purchaseid || body.initiatedby){
             //query += 'where '
             if(body.userid){
                 query += `${getMysqlQueryPhrase(query)} p.userid = '${body.userid}' `
@@ -91,6 +91,66 @@ adminModel.getPurchases = async (body) =>{
         return results;
     } catch (err) {
         throw err;
+    }
+}
+
+adminModel.getTickets = async (body) =>{
+
+    try {
+        let mysql = await getConnection();
+        let query =`select t.*,u.name,u.mobileno,p.productid,p.billid from mahavirsports.tickets t inner join mahavirsports.users u on t.userid =u.userid inner join mahavirsports.purchases p on t.purchaseid = p.purchaseid `;
+        if(body.userid || body.purchaseid || body.assignee || body.status  || body.ticketid){
+            //query += 'where '
+            if(body.ticketid){
+                query += `${getMysqlQueryPhrase(query)} t.ticketid = '${body.ticketid}' `
+            }
+            if(body.userid){
+                query += `${getMysqlQueryPhrase(query)} t.userid = '${body.userid}' `
+            }
+            if(body.purchaseid){
+                query += `${getMysqlQueryPhrase(query)} t.purchaseid = '${body.purchaseid}' `
+            }
+            if(body.assignee){
+                query += `${getMysqlQueryPhrase(query)} t.assignee = '${body.assignee}' `
+            }
+            if(body.status){
+                query += `${getMysqlQueryPhrase(query)} t.status = '${body.status}' `
+            }
+        }   
+        query += `order by t.created desc`
+        console.log("query ", query);
+        let results = await mysql.query(query);
+        await mysql.end();
+        console.log("results ", results);
+        return results;
+    } catch (err) {
+        throw err;
+    }
+}
+
+adminModel.assignTicket = async (body) =>{
+
+    try {
+        console.log("getting user data",body.mobileno,body.password)
+        let mysql = await getConnection();
+        console.log("got connection")
+        let query =`update mahavirsports.tickets set assignee = ${body.assignee}, status = 'INPROGRESS' where ticketid = ${body.ticketid}`;
+        console.log("query ", query);
+        let results = await mysql.query(query);
+        await mysql.end();
+        console.log("results ", results);
+        if(results && results.affectedRows == undefined ){
+            console.log("No record found")
+            let reason ="Something went wrong";
+            throw {"errorCode":400,"reason":reason};
+        }
+        return results;
+    } catch (err) {
+        let reason ="Something went wrong";
+        if(err.code == "ER_DUP_ENTRY")
+        reason = "User already exisit with given Mobile number";
+        throw {"errorCode":400,"reason":reason};
+       // throw err;
     }
 }
 

@@ -99,13 +99,29 @@ userModel.getPurchases = async (body) =>{
     }
 }
 
+userModel.getTickets = async (body) =>{
+
+    try {
+        let mysql = await getConnection();
+        let query =`select t.*,u.name as assignee,u.mobileno assigneecontact from mahavirsports.tickets t left outer join mahavirsports.users u on t.assignee = u.userid where t.userid ='${body.userData.userid}' `;
+  
+        query += `order by t.created desc`
+        console.log("query ", query);
+        let results = await mysql.query(query);
+        await mysql.end();
+        console.log("results ", results);
+        return results;
+    } catch (err) {
+        throw err;
+    }
+}
 
 
 userModel.createTicket = async (body) =>{
 
     try {
         let mysql = await getConnection();
-        let query =`insert into mahavirsports.tickets(userid,purchareid,status) values(${body.userid},${body.purchareid},'PENDING');`;
+        let query =`insert into mahavirsports.tickets(userid,purchaseid,status,comment) values(${body.userData.userid},${body.purchaseid},'PENDING','[${body.comment}');`;
         console.log("query ", query);
         let results = await mysql.query(query);
         await mysql.end();

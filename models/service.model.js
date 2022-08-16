@@ -1,6 +1,6 @@
 var pool = require("../config/db");
 var getConnection = require('../config/db').getConnection;
-
+var {getMysqlQueryPhrase}  =require('../config/util')
 var ObjectId = require('mongodb').ObjectID;
 var getBooleanValue = require("../config/util").getBooleanValue;
 
@@ -33,7 +33,65 @@ adminModel.addpurchase = async (body) =>{
 
 
 
+adminModel.getAssignedTickets = async (body) =>{
 
+    try {
+        let mysql = await getConnection();
+        console.log("got connection")
+        let query =`select t.*,u.name as "customername", u.mobileno, p.purchaseid,p.productid , p.purchasedate from mahavirsports.tickets t inner join mahavirsports.users u on t.userid = u.userid inner join mahavirsports.purchases p on p.purchaseid = t.purchaseid`;
+        if(body.userid || body.purchaseid || body.status  || body.ticketid){
+            //query += 'where '
+            if(body.ticketid){
+                query += `${getMysqlQueryPhrase(query)} t.ticketid = '${body.ticketid}' `
+            }
+            if(body.userid){
+                query += `${getMysqlQueryPhrase(query)} t.userid = '${body.userid}' `
+            }
+            if(body.purchaseid){
+                query += `${getMysqlQueryPhrase(query)} t.purchaseid = '${body.purchaseid}' `
+            }
+
+            if(body.status){
+                query += `${getMysqlQueryPhrase(query)} t.status = '${body.status}' `
+            }
+        }   
+        query += `${getMysqlQueryPhrase(query)} t.assignee = '${body.userData.userid}' `
+        query += `order by created desc`
+        console.log("query ", query);
+        let results = await mysql.query(query);
+        await mysql.end();
+        console.log("results ", results);
+        return results;
+    } catch (err) {
+        let reason ="Something went wrong";
+        if(err.code == "ER_DUP_ENTRY")
+        reason = "User already exisit with given Mobile number";
+        throw {"errorCode":400,"reason":reason};
+       // throw err;
+    }
+}
+
+
+
+adminModel.getPurchases = async (body) =>{
+
+    try {
+        let mysql = await getConnection();
+        console.log("got connection")
+        let query =`select * from mahavirsports.purchases where initiatedby = '${body.userData.userid}' order by purchasedate desc`;
+        console.log("query ", query);
+        let results = await mysql.query(query);
+        await mysql.end();
+        console.log("results ", results);
+        return results;
+    } catch (err) {
+        let reason ="Something went wrong";
+        if(err.code == "ER_DUP_ENTRY")
+        reason = "User already exisit with given Mobile number";
+        throw {"errorCode":400,"reason":reason};
+       // throw err;
+    }
+}
 
 // eventModel.insertEvent = async (event) => {
   
