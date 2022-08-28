@@ -84,6 +84,30 @@ userModel.verify = async (body) =>{
     }
 }
 
+userModel.updatePassword = async (body) =>{
+
+    try {
+        let mysql = await getConnection();
+        console.log("got connection")
+        let query =`update mahavirsports.users set password = '${body.newpassword}' where userid = '${body.userData.userid}'`;
+        console.log("query ", query);
+        let results = await mysql.query(query);
+        await mysql.end();
+        console.log("results ", results);
+        if(results && results.affectedRows == undefined ){
+            console.log("No record found")
+            let reason ="Something went wrong";
+            throw {"errorCode":400,"reason":reason};
+        }
+        return results;
+    } catch (err) {
+        let reason ="Something went wrong";
+        if(err.code == "ER_DUP_ENTRY")
+        reason = "User already exisit with given Mobile number";
+        throw {"errorCode":400,"reason":reason};
+       // throw err;
+    }
+}
 userModel.getPurchases = async (body) =>{
 
     try {

@@ -161,7 +161,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/mahavirsports/testv1/1659880739357-2022-08-07T13:58:59.357Z/mahavirsports.zip"
+          "S3Key": "serverless/mahavirsports/testv1/1660893018127-2022-08-19T07:10:18.127Z/mahavirsports.zip"
         },
         "Handler": "handler.handler",
         "Runtime": "nodejs12.x",
@@ -200,14 +200,14 @@
         "MahavirsportsLogGroup"
       ]
     },
-    "MahavirsportsLambdaVersion3pdhEKUJzhkUMaFqKbwULg9Ifnty1i14Qee5dtm0R8": {
+    "MahavirsportsLambdaVersionrVhpv5wHQywSuBQNAz9zJqPEIsCV0KEagzIIPzX5Ew": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "MahavirsportsLambdaFunction"
         },
-        "CodeSha256": "4kCM8OjJ7BU7kN6mJG1Ih9ASEYl6fT2Jh8R7YlsKzIg=",
+        "CodeSha256": "VuPkb/9OqoK3v/bAEBbVUptsDkdHKcK6qVOwT0AnMJg=",
         "Description": "mahavirsports Service"
       }
     },
@@ -329,7 +329,7 @@
         "MahavirsportsLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1659880700689": {
+    "ApiGatewayDeployment1660893009422": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -392,7 +392,7 @@
     "MahavirsportsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "MahavirsportsLambdaVersion3pdhEKUJzhkUMaFqKbwULg9Ifnty1i14Qee5dtm0R8"
+        "Ref": "MahavirsportsLambdaVersionrVhpv5wHQywSuBQNAz9zJqPEIsCV0KEagzIIPzX5Ew"
       },
       "Export": {
         "Name": "sls-mahavirsports-testv1-MahavirsportsLambdaFunctionQualifiedArn"

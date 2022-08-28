@@ -103,7 +103,7 @@ package:
     - composer*
     - vendor/**
     - vendorlocal/**
-    # - node_modules/**
+    - node_modules/**
     - layers/**
     - Gruntfile.js
     - sls*

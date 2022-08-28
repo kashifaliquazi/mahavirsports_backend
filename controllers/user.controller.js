@@ -59,6 +59,18 @@ userController.verify= async (body)=>{
 }
 
 
+userController.updatePassword= async (body)=>{
+    try {
+        console.log("userController.login:body ",body);
+        let user = await userModel.updatePassword(body);
+        console.log("userController.signup:user ",user);
+        // We need to send OTP to Mobile number
+
+        return {"message":`Password Has been updated`};
+        }catch(ex){
+        throw ex;
+        }
+}
 userController.getPurchases= async (body)=>{
     try {
         console.log("userController.getPurchases:body ",body);

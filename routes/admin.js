@@ -43,7 +43,9 @@ router.get('/getusers',verifyToken,async (req, res, next)=> {
 
     try {
     let body = req.query;
-    console.log("body>",body)
+    console.log("body>>>",body)
+    // let statusArray = JSON.parse(body.teststatus);
+    // console.log("statusArray>",statusArray);
     let purchases = await adminController.getTickets(body);
     res.send({ "success": purchases});
     }catch(ex){

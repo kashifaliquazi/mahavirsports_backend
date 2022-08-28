@@ -39,6 +39,29 @@ router.post('/login',async (req, res, next)=> {
     }
   });
 
+  router.post('/updatepassword',verifyToken,async (req, res, next)=> {
+
+    try {
+    let body = req.body;
+    body.userData = req.userData;
+    console.log("updatepassword:body ",body)
+    let loginBody = {
+      "mobileno":body.userData.mobileno,
+      "password":body.currentpassword
+    }
+    let isUserExist = await userController.login(loginBody)
+    console.log("isUserExist ",isUserExist);
+    let user = await userController.updatePassword(body)
+    res.send({ "success": user });
+    }catch(ex){
+     let err =  {
+        "errorCode": 400,
+        "reason": "Invalid Password"
+    }
+    res.send(err);
+    }
+  });
+
   router.get('/getpurchases',verifyToken,async (req, res, next)=> {
 
     try {

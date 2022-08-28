@@ -12,7 +12,7 @@ adminModel.addpurchase = async (body) =>{
     try {
         let mysql = await getConnection();
         console.log("got connection")
-        let query =`insert into mahavirsports.purchases(userid,productid,comment,initiatedby,productdetails,billid) values(${body.userid},'${body.productid}','${body.comment}','${body.userData.userid}','${body.purchasedetails}','${body.billid}');`;
+        let query =`insert into mahavirsports.purchases(userid,productid,comment,initiatedby,productdetails,billid,initiatedbyname) values(${body.userid},'${body.productid}','${body.comment}','${body.userData.userid}','${body.purchasedetails}','${body.billid}','${body.userData.name}');`;
         console.log("query ", query);
         let results = await mysql.query(query);
         await mysql.end();
