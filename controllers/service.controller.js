@@ -1,5 +1,6 @@
 var serviceModel = require("../models/service.model");
-const { CONSTANTS } = require("../config/constants")
+const { CONSTANTS } = require("../config/constants");
+const { generateSingedURL } = require("../config/awsutils");
 var jwt = require('jsonwebtoken');
 
 
@@ -54,6 +55,29 @@ serviceController.getPurchases= async (body)=>{
             console.log("serviceController.getPurchases:ex ",ex);
         throw ex;
         }
+}
+
+serviceController.getSignedURL = async (body) => {
+    try {
+        console.log("serviceController.getSignedURL:body ");
+        let singedURL = generateSingedURL(body.file)
+        console.log("serviceController.generateSingedURL:singedURL ", singedURL);
+        return singedURL;
+    } catch (ex) {
+        console.log("serviceController.getPurchases:ex ", ex);
+        throw ex;
+    }
+}
+serviceController.closeTicket = async (body) => {
+    try {
+        console.log("serviceController.closeTicket:body ");
+        let ticket =  await serviceModel.closeTicket(body);
+        console.log("serviceController.closeTicket ", ticket);
+        return ticket;
+    } catch (ex) {
+        console.log("serviceController.closeTicket:ex ", ex);
+        throw ex;
+    }
 }
 // function createDisappearanceNotification(event_detail){
 //   let body ={"event_detail":event_detail}

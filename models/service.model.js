@@ -4,10 +4,10 @@ var {getMysqlQueryPhrase}  =require('../config/util')
 var ObjectId = require('mongodb').ObjectID;
 var getBooleanValue = require("../config/util").getBooleanValue;
 
-let adminModel = {};
+let serviceModel = {};
 
 
-adminModel.addpurchase = async (body) =>{
+serviceModel.addpurchase = async (body) =>{
 
     try {
         let mysql = await getConnection();
@@ -33,7 +33,7 @@ adminModel.addpurchase = async (body) =>{
 
 
 
-adminModel.getAssignedTickets = async (body) =>{
+serviceModel.getAssignedTickets = async (body) =>{
 
     try {
         let mysql = await getConnection();
@@ -73,7 +73,7 @@ adminModel.getAssignedTickets = async (body) =>{
 
 
 
-adminModel.getPurchases = async (body) =>{
+serviceModel.getPurchases = async (body) =>{
 
     try {
         let mysql = await getConnection();
@@ -93,6 +93,27 @@ adminModel.getPurchases = async (body) =>{
     }
 }
 
+serviceModel.closeTicket = async (body) =>{
+
+    try {
+        let mysql = await getConnection();
+        console.log("got connection")
+        let query =`update mahavirsports.tickets set closingcomment = '${body.comments}',attachments ='${body.attachments}', status = 'COMPLETED' where ticketid = ${body.ticketid} and status = 'INPROGRESS'`;
+        console.log("closeTicket:query ", query);
+        let results = await mysql.query(query);
+        await mysql.end();
+        console.log("closeTicket:results ", results);
+        let response = {"errorCode":404,"reason":"Invalid ticket details"};
+        if(results.affectedRows == 1){
+            response = {"message":"Ticket succesfully closed!"};
+        }
+        throw results;
+    } catch (err) {
+        let reason ="Something went wrong";
+        throw {"errorCode":400,"reason":reason};
+       // throw err;
+    }
+}
 // eventModel.insertEvent = async (event) => {
   
 //   const client =await getConnection();
@@ -842,5 +863,5 @@ adminModel.getPurchases = async (body) =>{
 //   });
 // };
 
-module.exports = adminModel;
+module.exports = serviceModel;
 // export default help;

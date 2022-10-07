@@ -46,6 +46,30 @@ var serviceController = require('../controllers/service.controller');
     }
   });
 
+  router.get('/getsignedURL',verifyToken,async (req, res, next)=> {
+    try {
+    let body = req.query;
+    body.userData = req.userData;
+    console.log("getsignedURL:body>>",body)
+    let tickets = await serviceController.getSignedURL(body);
+    res.send({ "success": tickets });
+    }catch(ex){
+    res.send(ex);
+    }
+  });
+
+  router.post('/closeticket',verifyToken,async (req, res, next)=> {
+    try {
+    let body = req.body;
+    body.userData = req.userData;
+    console.log("closeticket:body>>",body)
+    let ticket = await serviceController.closeTicket(body);
+    res.send({ "success": ticket });
+    }catch(ex){
+    res.send(ex);
+    }
+  });
+
 
   
   // router.get('/getpurchase',verifyToken,async (req, res, next)=> {
