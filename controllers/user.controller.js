@@ -1,7 +1,7 @@
 var userModel = require("../models/user.model");
 const { CONSTANTS } = require("../config/constants")
 var jwt = require('jsonwebtoken');
-
+var utils = require('../config/util');
 
 
 
@@ -94,6 +94,8 @@ userController.getTickets= async (body)=>{
 
 userController.createTicket= async (body)=>{
     try {
+        let pin = utils.getRandomInt(1,9999);
+        body['pin'] = pin;
         console.log("userController.getPurchases:body ",body);
         let purchases = await userModel.createTicket(body);
         return {"message":`Ticket has been created`};;

@@ -1,9 +1,7 @@
 const AWS = require("aws-sdk");
-require("dotenv").config();//npm install dotenv
+//  require("dotenv").config();//npm install dotenv
 
 
-const s3 = new AWS.S3()
-// AWS.config.update({accessKeyId: 'id-omitted', secretAccessKey: 'key-omitted'})
 
 // Tried with and without this. Since s3 is not region-specific, I don't
 // think it should be necessary.
@@ -26,9 +24,12 @@ console.log("message",message)
   console.log("err",err)
 return err;});
 }
-sendOTP();//calling send otp function
+//sendOTP();//calling send otp function
 
 function generateSingedURL(file){
+  const s3 = new AWS.S3()
+AWS.config.update({accessKeyId: 'AKIAS4XJJTLSOPVUREVW', secretAccessKey: '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'})
+
   const myBucket = 'mahavirsportsdata';
 const myKey =file;
 const signedUrlExpireSeconds = 60 * 5
@@ -36,6 +37,7 @@ const signedUrlExpireSeconds = 60 * 5
 const url = s3.getSignedUrl('putObject', {
     Bucket: myBucket,
     Key: myKey,
+    ACL:"public-read",
     Expires: signedUrlExpireSeconds
 });
 return url;

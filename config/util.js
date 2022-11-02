@@ -1,11 +1,15 @@
-var request = require('request');
+// var request = require('request');
 // var PubNub = require('pubnub');
 var CONSTANTS = require('./constants').CONSTANTS;
 
 module.exports.getMysqlQueryPhrase = function (query){
   return query.search('WHERE') >= 0 ? ' AND ' : ' WHERE ';
 };
-
+ module.exports.getRandomInt = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+}
 console.log("CONSTANTS >>>>>>>>>>>>>>>>>",CONSTANTS);
 module.exports.categories = {
   132:"DayByDay",
@@ -204,31 +208,17 @@ return response;
   return payload;
   }
 
-  let pubnubInstance = null;
-  module.exports.getPubNubInstance = async () =>{
-   if(pubnubInstance){
-     console.log("reusing pubnubInstance in frequent calls");
-   return pubnubInstance;
-   }
-   pubnubInstance = new PubNub({
-    publishKey : CONSTANTS.pubnubPubKey,//'pub-c-fa46642a-27d9-4b6a-acd0-769ba7cbbf27',
-    subscribeKey :CONSTANTS.pubnubSubKey// 'sub-c-6df0e164-dcf8-11e8-abf2-1e598b800e69'
-})
-return pubnubInstance;
-
-  }
-
   module.exports.sendNotification = async (payload)=>{
-    console.log("sending Notification from PUBNUB",JSON.stringify(payload));
-    const client =await getPubNubInstance();
-   // console.log("Sending Notification",channelId);
-    return new Promise((resolve, reject) => {
+  //   console.log("sending Notification from PUBNUB",JSON.stringify(payload));
+  //   const client =await getPubNubInstance();
+  //  // console.log("Sending Notification",channelId);
+  //   return new Promise((resolve, reject) => {
  
-    console.log("payload",payload);
-    client.publish(payload, function(status, response) {
-        console.log("pubnun response",response);
-        resolve({ response: response });
-    })
+  //   console.log("payload",payload);
+  //   client.publish(payload, function(status, response) {
+  //       console.log("pubnun response",response);
+  //       resolve({ response: response });
+  //   })
   
-    });
+  //   });
   }

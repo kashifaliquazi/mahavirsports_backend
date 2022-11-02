@@ -1,7 +1,7 @@
 var pool = require("../config/db");
 var getConnection = require('../config/db').getConnection;
 
-var ObjectId = require('mongodb').ObjectID;
+// var ObjectId = require('mongodb').ObjectID;
 var getBooleanValue = require("../config/util").getBooleanValue;
 
 let userModel = {};
@@ -145,7 +145,7 @@ userModel.createTicket = async (body) =>{
 
     try {
         let mysql = await getConnection();
-        let query =`insert into mahavirsports.tickets(userid,purchaseid,status,comment) values(${body.userData.userid},${body.purchaseid},'PENDING','[${body.comment}');`;
+        let query =`insert into mahavirsports.tickets(userid,purchaseid,status,comment,pin) values(${body.userData.userid},${body.purchaseid},'PENDING','${body.comment}','${body.pin}');`;
         console.log("query ", query);
         let results = await mysql.query(query);
         await mysql.end();

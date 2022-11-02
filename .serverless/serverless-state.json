@@ -194,7 +194,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/mahavirsports/testv1/1660893018127-2022-08-19T07:10:18.127Z/mahavirsports.zip"
+                "S3Key": "serverless/mahavirsports/testv1/1665603745085-2022-10-12T19:42:25.085Z/mahavirsports.zip"
               },
               "Handler": "handler.handler",
               "Runtime": "nodejs12.x",
@@ -233,14 +233,14 @@
               "MahavirsportsLogGroup"
             ]
           },
-          "MahavirsportsLambdaVersionrVhpv5wHQywSuBQNAz9zJqPEIsCV0KEagzIIPzX5Ew": {
+          "MahavirsportsLambdaVersionAJ99eOJXLlEHFpE32i10ZJYu1MyfCqXb1wLShLkhxA": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "MahavirsportsLambdaFunction"
               },
-              "CodeSha256": "VuPkb/9OqoK3v/bAEBbVUptsDkdHKcK6qVOwT0AnMJg=",
+              "CodeSha256": "Xf3MjWRPd0ojkJdf+KRglT5wfRCVng716hGrDM8XkPI=",
               "Description": "mahavirsports Service"
             }
           },
@@ -362,7 +362,7 @@
               "MahavirsportsLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1660893009422": {
+          "ApiGatewayDeployment1665603736441": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -425,7 +425,7 @@
           "MahavirsportsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "MahavirsportsLambdaVersionrVhpv5wHQywSuBQNAz9zJqPEIsCV0KEagzIIPzX5Ew"
+              "Ref": "MahavirsportsLambdaVersionAJ99eOJXLlEHFpE32i10ZJYu1MyfCqXb1wLShLkhxA"
             },
             "Export": {
               "Name": "sls-mahavirsports-testv1-MahavirsportsLambdaFunctionQualifiedArn"
@@ -631,7 +631,7 @@
         "memory": 1024,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "MahavirsportsLambdaVersionrVhpv5wHQywSuBQNAz9zJqPEIsCV0KEagzIIPzX5Ew"
+        "versionLogicalId": "MahavirsportsLambdaVersionAJ99eOJXLlEHFpE32i10ZJYu1MyfCqXb1wLShLkhxA"
       }
     },
     "configValidationMode": "warn",
@@ -665,7 +665,7 @@
         ],
         "artifactsS3KeyDirname": "serverless/mahavirsports/testv1/code-artifacts",
         "artifact": "C:\\projects\\mahavirsports\\backend\\mahavirsports\\.serverless\\mahavirsports.zip",
-        "artifactDirectoryName": "serverless/mahavirsports/testv1/1660893018127-2022-08-19T07:10:18.127Z"
+        "artifactDirectoryName": "serverless/mahavirsports/testv1/1665603745085-2022-10-12T19:42:25.085Z"
       }
     },
     "layers": {},
@@ -673,7 +673,7 @@
     "artifact": "C:\\projects\\mahavirsports\\backend\\mahavirsports\\.serverless\\mahavirsports.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/mahavirsports/testv1/1660893018127-2022-08-19T07:10:18.127Z",
+    "artifactDirectoryName": "serverless/mahavirsports/testv1/1665603745085-2022-10-12T19:42:25.085Z",
     "artifact": "mahavirsports.zip"
   }
 }
